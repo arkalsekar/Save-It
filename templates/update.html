@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Password{% endblock title %}
+{% block updateActive %}active{% endblock updateActive %}
+{% block body %}
+
+<div class="container">
+  <h1 class="text-center my-3">Update a Password </h1>
+
+  <form name='Add_Password' accept-charset='Add_Password' method="POST" action="/update/{{update_pass.id}}">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="site">Site Url </label>
+      <div class="input-group mb-3">
+        <input type="url" class="form-control" id="site" name="site" value="{{update_pass.site}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="sitename">Site Name </label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="sitename" name="sitename" value="{{update_pass.site_name}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="uname_site">Username </label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="uname_site" name="uname_site" value="{{update_pass.uname_site}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="pass_site"> Password </label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="pass_site" name="pass_site" value="{{update_pass.pass_site}}">
+      </div>
+    </div>
+      
+    <button type="submit" value="submit" name='submit' class="btn btn-success">Submit</button>
+    
+  </form>
+
+{% endblock body %}

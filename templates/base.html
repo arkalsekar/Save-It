@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    
+        <title>  Save !t | {% block title %}{% endblock title %} </title>
+
+    <style>
+        #typedtext {
+            font-family: 'Nanum Gothic', sans-serif;
+            /* color: #0a0a1b; */
+            color: rgb(13, 5, 44);
+        }
+
+        #visiontext {
+            /* font-family: 'Holtwood One SC', serif; */
+
+            font-family: 'Nanum Gothic', sans-serif;
+            /* color: #0a0a1b; */
+            color: rgb(13, 5, 44);
+        }
+
+        #footercolor {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        #darkcolor {
+            color: darkblue;
+        }
+
+        #darkcolors {
+            color: darkblue;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Save !t</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item {% block allActive %}{% endblock allActive %} ">
+                        <a class="nav-link" href="/all_passwords">All Passwords</a>
+                    </li>
+                    <li class="nav-item {% block addActive %}{% endblock addActive %} ">
+                        <a class="nav-link" href="/add_password">Add Password</a>
+                    </li>
+                        
+
+                </ul>
+                
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+                <!-- User is Authenticated So Display Other Details of user-->
+                {% if user.is_authenticated %}
+                
+                <!-- <a class="navbar-brand" href="/">{{user.username}}</a> -->
+                <div class="dropdown mx-2">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="user-details"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{user.username}}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="user-details">
+                        <li><a class="dropdown-item" href="/handle_logout">Logout</a></li>
+                    </ul>
+                </div>
+
+
+                {% endif %}
+
+
+                <!-- User is not authenticated so Display Normal Login and Signup -->
+                {% if not user.is_authenticated %}
+                <!-- Button trigger Signup modal -->
+                <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal"
+                    data-bs-target="#signupModal">Signup</button>
+                <!-- Button trigger Login modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#loginModal">Login</button>
+                {% endif %}
+
+
+
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+        <strong class="alert-heading">Message: </strong> <span>{{ message }}</span>
+
+        <hr>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+
+
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="SingupTitle">Signup</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h1 class="text-center my-3"> </h1>
+                    <form method="POST" action="/signup">
+                        {% csrf_token %}
+
+
+                        <div class="form-group">
+                            <label for="uname">Username</label>
+                            <input type="text" class="form-control is-valid" id="uname" name="uname" placeholder="eg: johnkeats"
+                                required>
+                                    
+                                <div class="valid-feedback">
+                                    Please choose a username.
+                                  </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control" id="fname" name="fname" placeholder="eg: John"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control" id="lname" name="lname" placeholder="eg: Keats"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="signupemail">Email address</label>
+                            <input type="email" class="form-control" id="signupemail" name="signupemail"
+                                placeholder="Enter your Email Address Here" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signuppassword1">Password </label>
+                            <input type="text" class="form-control" id="signuppassword1" name="signuppassword1"
+                                placeholder="eg: Johnkeats#10" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signuppassword2">Repeat Password </label>
+                            <input type="text" class="form-control" id="signuppassword2" name="signuppassword2"
+                                placeholder="eg Johnkeats#10" required>
+                        </div>
+
+                        <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="LoginTitle">Signup</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h1 class="text-center my-3"> </h1>
+                    <form method="POST" action="/handle_login">
+                        {% csrf_token %}
+
+
+                        <div class="form-group">
+                            <label for="loginusername">Username</label>
+                            <input type="text" class="form-control" id="loginusername" name="loginusername"
+                                placeholder="eg: johnkeats" required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="loginpassword">Repeat Password </label>
+                            <input type="text" class="form-control" id="loginpassword" name="loginpassword"
+                                placeholder="eg Johnkeats#10" required>
+                        </div>
+
+                        <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% block body %}
+    {% endblock body %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+        {% load static %}
+        <script src="/static/script.js"></script>
+
+
+
+
+</body>
+
+</html>
